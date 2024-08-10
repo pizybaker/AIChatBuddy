@@ -2,7 +2,8 @@
 
 ## Description
 AIChatBuddy (or Whatsnap) is a unique chat simulation project designed to replicate the experience of chatting with a real person. This web-based app allows users to engage in conversations with an AI that responds naturally, mimicking human interaction. The AI is designed to simulate a realistic messaging environment where users can exchange messages just like they would with a friend.
-## Features
+
+In addition to its web-based functionality, AIChatBuddy (or Whatsnap) can also be integrated with WhatsApp. This feature enables users to interact with the AI directly through WhatsApp, making the chat experience even more accessible and convenient. Code for integrating WhatsApp is available in the same repository under the "whatsapp-integration" folder.
   1. Realistic Conversations: The AI responds like a friend, asking questions and providing thoughtful replies based on user input.
 
   2. Typing Simulation: To enhance realism, the app simulates typing delays before the AI responds.
