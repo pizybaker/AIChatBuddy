@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whatsnap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 400px;
+            background-color: #2c2c2c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        .chat-box {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #2b2b2b;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            color: #f1f1f1;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            width: fit-content;
+            max-width: 100%;
+        }
+        .message.user {
+            background-color: #004d00;
+            align-self: flex-end;
+        }
+        .message.bot {
+            background-color: #444;
+            align-self: flex-start;
+        }
+        .typing {
+            font-style: italic;
+            color: #aaa;
+            margin: 10px 0;
+        }
+        .input-box {
+            display: flex;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #555;
+            margin-right: 10px;
+            background-color: #333;
+            color: #f1f1f1;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: #004d00;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; color: white;">Whatsnap</h1>
+        <div class="chat-box" id="chat-box">
+            <!-- Pre-existing conversation -->
+            <div class="message bot">Hey! What's up?</div>
+            <div class="message user">Just chilling, you?</div>
+            <div class="message bot">Same here, any plans for today?</div>
+        </div>
+        <div class="input-box">
+            <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('send-button').addEventListener('click', function() {
+            const chatBox = document.getElementById('chat-box');
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+
+            if (message === "") return;
+
+            
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'message user';
+            userMessageDiv.textContent = message;
+            chatBox.appendChild(userMessageDiv);
+
+            
+            userInput.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Show typing animation
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing';
+            typingDiv.textContent = 'Typing...';
+            chatBox.appendChild(typingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Disable send button while waiting
+            const sendButton = document.getElementById('send-button');
+            sendButton.disabled = true;
+
+            
+            setTimeout(function() {
+                
+                setTimeout(function() {
+                    
+                    chatBox.removeChild(typingDiv);
+
+                    
+                    fetch("/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "prompt=" + encodeURIComponent(message)
+                    })
+                    .then(response => response.text())
+                    .then(responseText => {
+                        const botMessageDiv = document.createElement('div');
+                        botMessageDiv.className = 'message bot';
+                        botMessageDiv.textContent = responseText;
+                        chatBox.appendChild(botMessageDiv);
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                        sendButton.disabled = false; 
+                    });
+                }, 2000); 
+            }, 0); 
+        });
+
+      
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('send-button').click();
+            }
+        });
+
+        
+        function scrollToBottom() {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        
+        window.onload = scrollToBottom;
+    </script>
+</body>
+</html>
