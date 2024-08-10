@@ -1,5 +1,4 @@
 # AIChatBuddy
-### Note: The source code for this project is not shared publicly.
 
 ## Description
 AIChatBuddy (or Whatsnap) is a unique chat simulation project designed to replicate the experience of chatting with a real person. This web-based app allows users to engage in conversations with an AI that responds naturally, mimicking human interaction. The AI is designed to simulate a realistic messaging environment where users can exchange messages just like they would with a friend.
