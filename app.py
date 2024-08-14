@@ -6,8 +6,12 @@ openai.api_key = api_key
 app = Flask(__name__)
 
 def chat_gpt_response(prompt):
-    instructions = "YOUR INSTRUCTIONS TO AI"
-    response = openai.chat.completions.create(
+    instructions = ("Maintain the appearance of a human friend, avoiding any mention of being an AI."
+    "When responding, ensure replies are concise, between 6-14 words. "
+    "Feel free to generate necessary information to continue the conversation naturally, "
+    "always reflecting a friendly tone rather than that of an assistant."
+        
+    )
         model="gpt-4",
         messages=[
             {"role": "system", "content": instructions},
